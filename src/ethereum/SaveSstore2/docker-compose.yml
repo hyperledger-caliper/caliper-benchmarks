@@ -1,0 +1,10 @@
+services:
+  sstore2-save-compiler:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: >
+      sh -c "npm install && 
+      npx hardhat compile &&
+      node printABI.js"

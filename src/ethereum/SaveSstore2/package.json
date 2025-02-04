@@ -1,0 +1,14 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.5.0",
+    "hardhat": "^2.22.16",
+    "solidity-coverage": "^0.8.13"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^5.1.0",
+    "dotenv": "^16.4.5",
+    "sstore2": "github:0xsequence/sstore2"
+  }
+}

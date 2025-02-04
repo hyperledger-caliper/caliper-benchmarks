@@ -23,3 +23,8 @@ package-lock.json
 pkg
 bin
 .vscode
+src/ethereum/SaveSstore2/artifacts/
+
+src/ethereum/SaveSstore2/node_modules/
+
+src/ethereum/SaveSstore2/cache/

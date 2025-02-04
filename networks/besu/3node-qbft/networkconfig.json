@@ -1,0 +1,67 @@
+{
+  "caliper": {
+    "blockchain": "ethereum",
+    "command": {
+      "start": "",
+      "end": ""
+    }
+  },
+  "ethereum": {
+    "url": "ws://besu1.local:8546",
+    "contractDeployerAddress": "0xD1cf9D73a91DE6630c2bb068Ba5fDdF9F0DEac09",
+    "contractDeployerAddressPrivateKey": "0x797c13f7235c627f6bd013dc17fff4c12213ab49abcf091f77c83f16db10e90b",
+    "fromAddressSeed": "0x3f841bf589fdf83a521e55d51afddc34fa65351161eead24f064855fc29c9580",
+    "transactionConfirmationBlocks": 2,
+    "contracts": {
+      "SaveSstore2": {
+        "path": "./src/ethereum/SaveSstore2/SaveSstore2.json",
+        "new": true,
+        "estimateGas": true,
+        "gas": {
+          "storeAndCheck": 3000000000
+        },
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "uint256",
+                "name": "_size",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "_start",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "_end",
+                "type": "uint256"
+              }
+            ],
+            "name": "InvalidCodeAtRange",
+            "type": "error"
+          },
+          {
+            "inputs": [],
+            "name": "WriteError",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "string",
+                "name": "data",
+                "type": "string"
+              }
+            ],
+            "name": "storeAndCheck",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+test:
+  name: "Save via Sstore2 scenario: store random data"
+  description: "Upload random data of a specified size in MB to the SaveSstore2 contract"
+  workers:
+    type: local
+    number: 1
+
+  rounds:
+    - label: store-random-mb
+      description: "Store ~1 MB of random data in each transaction"
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: "benchmarks/scenario/SaveSstore2/store-random-mb.js"
+        arguments:
+          totalMB: 1
+
+    - label: store-random-mb
+      description: "Store ~2 MB of random data in each transaction"
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 1
+      workload:
+        module: "benchmarks/scenario/SaveSstore2/store-random-mb.js"
+        arguments:
+          totalMB: 2

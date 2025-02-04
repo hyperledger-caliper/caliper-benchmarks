@@ -1,0 +1,104 @@
+x-besu-args: &besu-args
+  - --rpc-http-cors-origins="all" 
+  - --metrics-enabled
+  - --metrics-host=0.0.0.0
+  - --metrics-port=9545
+  - --p2p-enabled=true
+  - --discovery-enabled=true
+  - --genesis-file=/config/genesis.json
+  - --node-private-key-file=/var/lib/besu/key
+  - --rpc-http-enabled
+  - --rpc-ws-enabled
+  - --rpc-ws-host=0.0.0.0
+  - --host-allowlist=*
+  - --bootnodes=enode://b24a284da524fc728360d97889a2f3f8420e998e0548a51a8ee4d7744a530c89c0503288e3f0557457f315f56eb692245468e0007bdc0ed2871355e1e1b71078@222.222.0.2:30303
+  - --compatibility-eth64-forkid-enabled=false
+  - --tx-pool=sequenced
+  - --tx-pool-max-size=8192
+  - --data-storage-format=BONSAI
+  - --tx-pool-limit-by-account-percentage=0.99
+  - --cache-last-blocks=2
+  - --fast-sync-min-peers=2
+
+networks:
+  besu-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 222.222.0.0/16  # Custom subnet not conflicting with local network
+
+volumes:
+  besu_logs: {}
+
+services:
+  besu1:
+    networks:
+      besu-network:
+        ipv4_address: 222.222.0.2
+        aliases:
+          - besu1.local
+    container_name: besu_node1
+    volumes:
+      - ./node-1/data:/var/lib/besu
+      - ./config/genesis.json:/config/genesis.json
+    ports:
+      - "8545:8545"   # RPC HTTP port
+      - "8546:8546"   # WS HTTP port
+      - "30303:30303" # P2P port
+      - "9545:9545"   # Metrics port
+    image: hyperledger/besu:latest
+    command: *besu-args
+
+  besu2:
+    networks:
+      besu-network:
+        ipv4_address: 222.222.0.3
+    container_name: besu_node2
+    volumes:
+      - ./node-2/data:/var/lib/besu
+      - ./config/genesis.json:/config/genesis.json
+    ports:
+      - "8547:8545"   # RPC HTTP port
+      - "8548:8546"   # WS HTTP port
+      - "30304:30303" # P2P port
+      - "9546:9545"   # Metrics port
+    image: hyperledger/besu:latest
+    command: *besu-args
+    depends_on:
+      - besu1
+
+  besu3:
+    networks:
+      besu-network:
+        ipv4_address: 222.222.0.4
+    container_name: besu_node3
+    volumes:
+      - ./node-3/data:/var/lib/besu
+      - ./config/genesis.json:/config/genesis.json
+    ports:
+      - "8549:8545"   # RPC HTTP port
+      - "8550:8546"   # WS HTTP port
+      - "30305:30303" # P2P port
+      - "9547:9545"   # Metrics port
+    image: hyperledger/besu:latest
+    command: *besu-args
+    depends_on:
+      - besu1
+
+  caliper:
+    build:
+      context: ../../../
+      dockerfile: ./networks/besu/3node-qbft/Dockerfile.caliper
+    container_name: caliper
+    environment:
+      - BOOTNODE_URL=besu1.local
+      - DELAY=60
+    depends_on:
+      - besu1
+    volumes:
+      - ./results:/app/results
+    networks:
+      besu-network:
+        ipv4_address: 222.222.0.202
+        aliases:
+          - caliper

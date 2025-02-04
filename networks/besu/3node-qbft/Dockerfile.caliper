@@ -1,0 +1,30 @@
+# Use a Node.js base image
+FROM node:18
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+
+# Install Caliper CLI
+RUN npm install
+RUN npm  install  --only=prod  @hyperledger/caliper-cli
+RUN npx caliper bind --caliper-bind-sut besu:latest
+
+# Copy the necessary files
+COPY benchmarks ./benchmarks
+COPY networks ./networks
+COPY src ./src
+COPY networks/besu/3node-qbft/entrypoint.sh ./entrypoint.sh
+COPY networks/besu/3node-qbft/networkconfig.json networks/networkconfig.json
+
+# Make the entrypoint script executable
+RUN chmod +x ./entrypoint.sh
+
+# Set the environment variables, can be overridden
+ENV BOOTNODE_URL="localhost"
+ENV CONFIG_YAML="benchmarks/scenario/SaveSstore2/config.yaml"
+
+# Set the entrypoint
+ENTRYPOINT ["./entrypoint.sh"]
