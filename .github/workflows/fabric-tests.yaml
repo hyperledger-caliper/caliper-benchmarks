@@ -84,7 +84,7 @@ jobs:
     steps:
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@v4.0.2
+      uses: actions/cache@v4.2.3
       with:
         path: node_modules
         key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
@@ -98,7 +98,7 @@ jobs:
         npx caliper --version
     - name: Cache Fabric Samples and Binaries
       id: cache-fabric
-      uses: actions/cache@v4.0.2
+      uses: actions/cache@v4.2.3
       with:
         path: fabric-samples
         key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
@@ -121,6 +121,10 @@ jobs:
         benchmark: ${{ fromJSON(needs.changes.outputs.benchmark) }}
         exclude:
           - cc-env: java
+            benchmark: fixed-asset
+          - cc-env: java
+            benchmark: fabcar
+          - cc-env: java
             benchmark: marbles
           - cc-env: java
             benchmark: simple
@@ -135,7 +139,7 @@ jobs:
         node-version: 20.x
     - name: Cache node modules
       id: cache-npm
-      uses: actions/cache@v4.0.2
+      uses: actions/cache@v4.2.3
       with:
         path: node_modules
         key: ${{ matrix.node-version }}-npm-cache-${{ env.CALIPER_VERSION }}-${{ env.FABRIC_BIND_SUT }}
@@ -143,7 +147,7 @@ jobs:
           ${{ matrix.node-version }}-npm-cache-
     - name: Cache Fabric Samples and Binaries
       id: cache-fabric
-      uses: actions/cache@v4.0.2
+      uses: actions/cache@v4.2.3
       with:
         path: fabric-samples
         key: ${{ runner.os }}-fabric-samples-${{ env.FABRIC_VERSION }}
@@ -156,7 +160,7 @@ jobs:
       run: ./network.sh up createChannel -s couchdb
     - name: Start Prometheus and Grafana
       working-directory: ../fabric-samples/test-network/prometheus-grafana
-      run: docker-compose up -d
+      run: docker compose up -d
     - name: Deploy Chaincode
       working-directory: ../fabric-samples/test-network
       run: ../../caliper-benchmarks/.github/scripts/deploy-chaincode.sh ${{ matrix.cc-env }} ${{ matrix.benchmark }}

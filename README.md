@@ -10,7 +10,7 @@ This repository has three branches:
 
 1. **main**. Contains sample benchmarks
 2. **reports**. Contains md files that are built and published to the `gh-pages` branch
-3. **gh-pages**. Contains the build output from the `reports` branch 
+3. **gh-pages**. Contains the build output from the `reports` branch
 
 ## Main Branch Contents
 
@@ -34,8 +34,6 @@ In general the steps are:
 3. Run a Caliper CLI command that targets one of the contained benchmarks.
 
 For detailed information about using this repo with hyperledger fabric see [Hyperledger Fabric Networks](./networks/fabric/README.md)
-
-For detailed information about using this repo with hyperledger besu see [Hyperledger Besu Networks](./networks/besu/1node-clique/README.md)
 
 ## Extending the Documented Reports
 
