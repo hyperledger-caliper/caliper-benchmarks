@@ -194,9 +194,9 @@ The benchmarks require a Prometheus server to be running that is collecting Hype
 
 - Ensure your test network is up
 - in the `test-network` directory change to the `prometheus-grafana` directory
-- `docker-compose up -d` to bring up the servers
+- `docker compose up -d` to bring up the servers
 
-You can terminate the servers with the command `docker-compose down`.
+You can terminate the servers with the command `docker compose down`.
 
 There are several benchmarks available within the `benchmarks/api/fabric` directory to choose from and each file contains a description of their purpose
 

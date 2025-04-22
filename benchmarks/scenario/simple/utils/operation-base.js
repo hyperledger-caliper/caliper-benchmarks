@@ -16,7 +16,7 @@
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
 
-const SupportedConnectors = ['ethereum', 'fabric'];
+const SupportedConnectors = ['fabric'];
 
 /**
  * Base class for simple operations.
@@ -95,8 +95,6 @@ class OperationBase extends WorkloadModuleBase {
         switch (this.connectorType) {
             case 'fabric':
                 return this._createFabricConnectorRequest(operation, args);
-            case 'ethereum':
-                return this._createEthereumConnectorRequest(operation, args);
             default:
                 // this shouldn't happen
                 throw new Error(`Connector type ${this.connectorType} is not supported by the benchmark`);
@@ -117,23 +115,6 @@ class OperationBase extends WorkloadModuleBase {
             contractVersion: '1.0',
             contractFunction: operation,
             contractArguments: Object.keys(args).map(k => args[k].toString()),
-            readOnly: query
-        };
-    }
-
-    /**
-     * Assemble a Ethereum-specific request from the business parameters.
-     * @param {string} operation The name of the operation to invoke.
-     * @param {object} args The object containing the arguments.
-     * @return {object} The Ethereum-specific request.
-     * @private
-     */
-    _createEthereumConnectorRequest(operation, args) {
-        const query = operation === 'query';
-        return {
-            contract: 'simple',
-            verb: operation,
-            args: Object.keys(args).map(k => args[k]),
             readOnly: query
         };
     }
