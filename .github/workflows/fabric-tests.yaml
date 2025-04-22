@@ -121,10 +121,6 @@ jobs:
         benchmark: ${{ fromJSON(needs.changes.outputs.benchmark) }}
         exclude:
           - cc-env: java
-            benchmark: fixed-asset
-          - cc-env: java
-            benchmark: fabcar
-          - cc-env: java
             benchmark: marbles
           - cc-env: java
             benchmark: simple
@@ -137,6 +133,11 @@ jobs:
     - uses: actions/setup-node@v4.0.2
       with:
         node-version: 20.x
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+#    - uses: gradle/actions/setup-gradle@v4
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v4.2.3
